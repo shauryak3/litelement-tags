@@ -28,12 +28,12 @@ const polyfills = [
   }
 ];
 
-const assets = [
-  {
-    from: 'src/img',
-    to: 'img/'
-  }
-];
+// const assets = [
+//   {
+//     from: 'src/img',
+//     to: 'img/'
+//   }
+// ];
 
 const plugins = [
   new CleanWebpackPlugin(['dist']),
@@ -47,7 +47,7 @@ const plugins = [
       minifyJS: true
     }
   }),
-  new CopyWebpackPlugin([...polyfills, ...assets], {
+  new CopyWebpackPlugin([...polyfills], {
     ignore: ['.DS_Store']
   })
 ];
