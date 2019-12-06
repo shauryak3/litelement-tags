@@ -5,27 +5,29 @@ import './remove-component';
 class Tag extends LitElement {
 	constructor () {
 		super();
+		this.props.labelField = 'text';
+		this.props.readOnly = false;
 	}
 	static get properties() {
 		return {
-
+			props: { type: Object }
 		}; 
 	}
 	render() {
+		let { props } = this;
+		const label = props.tag[props.labelField];
 		return html`
 			<span
-				className=${ClassNames('tag-wrapper', classNames.tag, className)}
-				style=${{opacity: isDragging ? 0 : 1, 'cursor': canDrag(props) ? 'move' : 'auto'}}
 				onClick=${props.onTagClicked}
 				onKeyDown=${props.onTagClicked}
 				onTouchStart=${props.onTagClicked}>
-				{label}
+				${label}
 				<remove-component
 					tag=${props.tag}
 					className=${classNames.remove}
 					removeComponent=${props.removeComponent}
 					onClick=${props.onDelete}
-					readOnly=${readOnly}
+					readOnly=${rpropseadOnly}
 				/>
 			</span>
 		`;
