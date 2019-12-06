@@ -31,7 +31,7 @@ class Suggestions extends LitElement {
 			handleClick: { type: Function },
 			handleHover: { type: Function },
 			minQueryLength: { type: Number },
-			shouldRenderSuggestions: { type: Function },
+			shouldRenderSuggestionsProps: { type: Function },
 			isFocused: { type: Boolean },
 			classNames: { type: Object },
 			labelField: { type: String },
@@ -41,7 +41,7 @@ class Suggestions extends LitElement {
 	}
 
 	shouldUpdate(changedProps) {
-		const shouldRenderSuggestions = this.shouldRenderSuggestions;
+		const shouldRenderSuggestions = this.shouldRenderSuggestionsProps || this.shouldRenderSuggestions;
 		return (
 			this.isFocused !== changedProps.get('isFocused') ||
 			!isEqual(changedProps.get('suggestions'), this.suggestions) ||
@@ -107,7 +107,7 @@ class Suggestions extends LitElement {
 		});
 
 		// use the override, if provided
-		const shouldRenderSuggestions = this.shouldRenderSuggestions || this.shouldRenderSuggestions;
+		const shouldRenderSuggestions = this.shouldRenderSuggestionsProps || this.shouldRenderSuggestions;
 		if (suggestions.length === 0 || !shouldRenderSuggestions(this.query)) {
 			return null;
 		}
