@@ -1,4 +1,4 @@
-import { LitElement } from 'lit-element';
+import { LitElement, html } from 'lit-element';
 import noop from 'lodash/noop';
 import uniq from 'lodash/uniq';
 import memoizeOne from 'memoize-one';
@@ -12,7 +12,6 @@ import { buildRegExpFromDelimiters } from './utils';
 import {
 	KEYS,
 	DEFAULT_PLACEHOLDER,
-	DEFAULT_CLASSNAMES,
 	DEFAULT_LABEL_FIELD,
 	INPUT_FIELD_POSITIONS,
 } from './constants';
@@ -69,7 +68,6 @@ class LitelementTags extends LitElement {
 			handleInputChangeProps: { type: Function },
 			handleInputFocusProps: { type: Function },
 			handleInputBlurProps: { type: Function },
-			handleDrag: { type: Function },
 			id: { type: String },
 			minQueryLength: { type: Number },
 			shouldRenderSuggestions: { type: Function },
@@ -81,6 +79,70 @@ class LitelementTags extends LitElement {
 		if (this.autofocus && !this.readOnly) {
 			this.resetAndFocusInput();
 		}
+	}
+
+	render() {
+
+		console.log('shaurya');
+		const tagItems = this.getTagItems();
+
+		const query = this.query.trim();
+		const selectedIndex = this.selectedIndex;
+		const suggestions = this.suggestions;
+
+		const {
+			placeholder,
+			name: inputName,
+			id: inputId,
+			maxLength,
+			inline,
+			inputFieldPosition,
+		} = this;
+
+		const position = !inline ? INPUT_FIELD_POSITIONS.BOTTOM : inputFieldPosition;
+
+		const tagInput = !this.readOnly ?
+			html`<div>
+				<input
+					type="text"
+					placeholder=${placeholder}
+					aria-label=${placeholder}
+					onFocus=${this.handleFocus}
+					onBlur=${this.handleBlur}
+					onChange=${this.handleChange}
+					onKeyDown=${this.handleKeyDown}
+					onPaste=${this.handlePaste}
+					name=${inputName}
+					id=${inputId}
+					maxLength=${maxLength}
+					value=${this.inputValue}
+				/>
+
+				<lit-suggestions
+					query=${query}
+					suggestions=${suggestions}
+					labelField=${this.labelField}
+					selectedIndex=${selectedIndex}
+					handleClick=${this.handleSuggestionClick}
+					handleHover=${this.handleSuggestionHover}
+					minQueryLength=${this.minQueryLength}
+					shouldRenderSuggestions=${this.shouldRenderSuggestions}
+					isFocused=${this.isFocused}
+					renderSuggestion=${this.renderSuggestion}
+				/>
+			</div>`
+		: null;
+		console.log(tagInput);
+		return html`
+			<div>
+				${position === INPUT_FIELD_POSITIONS.TOP && tagInput}
+				<div>
+				${tagItems}
+				${position === INPUT_FIELD_POSITIONS.INLINE && tagInput}
+				</div>
+				${position === INPUT_FIELD_POSITIONS.BOTTOM && tagInput}
+			</div>
+		`;
 	}
 
 	filteredSuggestions(query, suggestions) {
@@ -97,7 +159,7 @@ class LitelementTags extends LitElement {
 		return exactSuggestions.concat(partialSuggestions);
 	}
 
-	getQueryIndex = (query, item) => {
+	getQueryIndex(query, item) {
 		return item[this.labelField]
 			.toLowerCase()
 			.indexOf(query.toLowerCase());
@@ -274,7 +336,7 @@ class LitelementTags extends LitElement {
 		this.selectedIndex = -1;
 
 		this.resetAndFocusInput();
-	};
+	}
 
 	handleSuggestionClick(i) {
 		this.addTag(this.suggestions[i]);
@@ -285,102 +347,23 @@ class LitelementTags extends LitElement {
 		this.selectionMode = true;
 	}
 
-	moveTag(dragIndex, hoverIndex) {
-		const tags = this.tags;
-
-		// locate tags
-		const dragTag = tags[dragIndex];
-
-		// call handler with the index of the dragged tag
-		// and the tag that is hovered
-		this.handleDrag(dragTag, dragIndex, hoverIndex);
-	}
-
-	getTagItems = () => {
+	getTagItems() {
 		const {
 			tags,
 			labelField,
-			removeComponent,
 			readOnly
 		} = this;
-		const moveTag = null;
 		return tags.map((tag, index) => {
 			return html`
-				<Tag
-					key=${`${tag.id}-${index}`}
-					index=${index}
+				<lit-tag
 					tag=${tag}
 					labelField=${labelField}
 					onDelete=${() => { this.handleDelete(index) }}
-					moveTag=${moveTag}
-					removeComponent=${removeComponent}
 					onTagClicked=${() => { this.handleTagClick(index) }}
 					readOnly=${readOnly}
 				/>
 			`;
 		});
-	};
-
-	render() {
-		const tagItems = this.getTagItems();
-
-		const query = this.query.trim();
-		const selectedIndex = this.selectedIndex;
-		const suggestions = this.suggestions;
-
-		const {
-			placeholder,
-			name: inputName,
-			id: inputId,
-			maxLength,
-			inline,
-			inputFieldPosition,
-		} = this;
-
-		const position = !inline ? INPUT_FIELD_POSITIONS.BOTTOM : inputFieldPosition;
-
-		const tagInput = !this.readOnly ? (
-			html`<div>
-				<input
-					type="text"
-					placeholder=${placeholder}
-					aria-label=${placeholder}
-					onFocus=${this.handleFocus}
-					onBlur=${this.handleBlur}
-					onChange=${this.handleChange}
-					onKeyDown=${this.handleKeyDown}
-					onPaste=${this.handlePaste}
-					name=${inputName}
-					id=${inputId}
-					maxLength=${maxLength}
-					value=${this.inputValue}
-				/>
-
-				<suggestions
-					query=${query}
-					suggestions=${suggestions}
-					labelField=${this.labelField}
-					selectedIndex=${selectedIndex}
-					handleClick=${this.handleSuggestionClick}
-					handleHover=${this.handleSuggestionHover}
-					minQueryLength=${this.minQueryLength}
-					shouldRenderSuggestions=${this.shouldRenderSuggestions}
-					isFocused=${this.isFocused}
-					renderSuggestion=${this.renderSuggestion}
-				/>
-			</div>`
-		) : null;
-
-		return html`
-			<div>
-				${position === INPUT_FIELD_POSITIONS.TOP && tagInput}
-				<div>
-				${tagItems}
-				${position === INPUT_FIELD_POSITIONS.INLINE && tagInput}
-				</div>
-				${position === INPUT_FIELD_POSITIONS.BOTTOM && tagInput}
-			</div>
-		`;
 	}
 }
 

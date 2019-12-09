@@ -1,4 +1,4 @@
-import { LitElement } from 'lit-element';
+import { LitElement, html } from 'lit-element';
 
 import isEqual from 'lodash/isEqual';
 import escape from 'lodash/escape';
@@ -69,7 +69,7 @@ class Suggestions extends LitElement {
 		}
 	}
 
-	markIt = (input, query) => {
+	markIt(input, query) {
 		const escapedRegex = query.trim().replace(/[-\\^$*+?.()|[\]{}]/g, '\\$&');
 		const { [this.labelField]: labelValue } = input;
 
@@ -121,4 +121,4 @@ class Suggestions extends LitElement {
 	}
 }
 
-customElements.define('suggestions', Suggestions);
+customElements.define('lit-suggestions', Suggestions);
