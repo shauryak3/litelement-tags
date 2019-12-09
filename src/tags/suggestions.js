@@ -31,11 +31,9 @@ class Suggestions extends LitElement {
 			handleClick: { type: Function },
 			handleHover: { type: Function },
 			minQueryLength: { type: Number },
-			shouldRenderSuggestionsProps: { type: Function },
 			isFocused: { type: Boolean },
 			classNames: { type: Object },
 			labelField: { type: String },
-			renderSuggestion: { type: Function },
 			suggestionsContainer: { type: Object}
 		};
 	}
@@ -85,9 +83,6 @@ class Suggestions extends LitElement {
 	}
 
 	renderSuggestion(item, query) {
-		if (typeof this.renderSuggestion === 'function') {
-			return this.renderSuggestion(item, query);
-		}
 		return html`<span dangerouslySetInnerHTML=${this.markIt(item, query)} />`;
 	}
 
@@ -107,8 +102,7 @@ class Suggestions extends LitElement {
 		});
 
 		// use the override, if provided
-		const shouldRenderSuggestions = this.shouldRenderSuggestionsProps || this.shouldRenderSuggestions;
-		if (suggestions.length === 0 || !shouldRenderSuggestions(this.query)) {
+		if (suggestions.length === 0 || !this.shouldRenderSuggestions(this.query)) {
 			return null;
 		}
 

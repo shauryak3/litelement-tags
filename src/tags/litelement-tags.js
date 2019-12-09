@@ -1,5 +1,6 @@
 import { LitElement, html } from 'lit-element';
 import noop from 'lodash/noop';
+import ClassNames from 'classnames';
 import uniq from 'lodash/uniq';
 import memoizeOne from 'memoize-one';
 
@@ -13,8 +14,10 @@ import {
 	KEYS,
 	DEFAULT_PLACEHOLDER,
 	DEFAULT_LABEL_FIELD,
+	DEFAULT_CLASSNAMES,
 	INPUT_FIELD_POSITIONS,
 } from './constants';
+
 
 class LitelementTags extends LitElement {
 	constructor() {
@@ -39,6 +42,7 @@ class LitelementTags extends LitElement {
 		this.selectedIndex = -1;
 		this.isFocused = false;
 		this.query = '';
+		this.classNames = { ...DEFAULT_CLASSNAMES, ...this.classNames };
 	}
 
 	static get properties() {
@@ -71,19 +75,17 @@ class LitelementTags extends LitElement {
 			id: { type: String },
 			minQueryLength: { type: Number },
 			shouldRenderSuggestions: { type: Function },
-			renderSuggestion: { type: Function }
+			classNames: { type: Object}
 		};
 	}
 
-	connectedCallback() {
-		if (this.autofocus && !this.readOnly) {
-			this.resetAndFocusInput();
-		}
-	}
+	// connectedCallback() {
+	// 	if (this.autofocus && !this.readOnly) {
+	// 		this.resetAndFocusInput();
+	// 	}
+	// }
 
 	render() {
-
-		console.log('shaurya');
 		const tagItems = this.getTagItems();
 
 		const query = this.query.trim();
@@ -102,16 +104,17 @@ class LitelementTags extends LitElement {
 		const position = !inline ? INPUT_FIELD_POSITIONS.BOTTOM : inputFieldPosition;
 
 		const tagInput = !this.readOnly ?
-			html`<div>
+			html`<div className=${this.classNames.tagInput}>
 				<input
+					className=${this.classNames.tagInputField}
 					type="text"
 					placeholder=${placeholder}
 					aria-label=${placeholder}
-					onFocus=${this.handleFocus}
-					onBlur=${this.handleBlur}
-					onChange=${this.handleChange}
-					onKeyDown=${this.handleKeyDown}
-					onPaste=${this.handlePaste}
+					@focus=${this.handleFocus}
+					@blur=${this.handleBlur}
+					@keypress=${this.handleChange}
+					@keyDown=${this.handleKeyDown}
+					@paste=${this.handlePaste}
 					name=${inputName}
 					id=${inputId}
 					maxLength=${maxLength}
@@ -120,27 +123,26 @@ class LitelementTags extends LitElement {
 
 				<lit-suggestions
 					query=${query}
-					suggestions=${suggestions}
+					suggestions=${JSON.stringify(suggestions)}
 					labelField=${this.labelField}
 					selectedIndex=${selectedIndex}
-					handleClick=${this.handleSuggestionClick}
-					handleHover=${this.handleSuggestionHover}
-					minQueryLength=${this.minQueryLength}
+					.handleClick=${() => {this.handleSuggestionClick()}}
+					.handleHover=${() => {this.handleSuggestionHover()}}
+					.minQueryLength=${() => {this.minQueryLength()}}
 					shouldRenderSuggestions=${this.shouldRenderSuggestions}
 					isFocused=${this.isFocused}
-					renderSuggestion=${this.renderSuggestion}
+					classNames=${JSON.stringify(this.classNames)}
 				/>
 			</div>`
-		: null;
-		console.log(tagInput);
+		: html``;
 		return html`
-			<div>
-				${position === INPUT_FIELD_POSITIONS.TOP && tagInput}
-				<div>
+			<div className=${ClassNames(this.classNames.tags, 'react-tags-wrapper')}>
+				${position === INPUT_FIELD_POSITIONS.TOP? tagInput : html``}
+				<div className=${this.classNames.selected}>
 				${tagItems}
-				${position === INPUT_FIELD_POSITIONS.INLINE && tagInput}
+				${position === INPUT_FIELD_POSITIONS.INLINE? tagInput : html``}
 				</div>
-				${position === INPUT_FIELD_POSITIONS.BOTTOM && tagInput}
+				${position === INPUT_FIELD_POSITIONS.BOTTOM? tagInput : html``}
 			</div>
 		`;
 	}
@@ -195,13 +197,11 @@ class LitelementTags extends LitElement {
 	}
 
 	handleChange(e) {
-		if (this.handleInputChangeProps) {
-			this.handleInputChangeProps(e.target.value);
-		}
-
+		// if (this.handleInputChangeProps) {
+		// 	this.handleInputChangeProps(e.target.value);
+		// }
 		const query = e.target.value.trim();
-		const suggestions = this.filteredSuggestions(query, this.props.suggestions);
-
+		const suggestions = this.filteredSuggestions(query, this.suggestions);
 		this.query = query;
 		this.suggestions = suggestions;
 		this.selectedIndex = (this.selectedIndex >= suggestions.length ? suggestions.length - 1 : this.selectedIndex);
@@ -356,10 +356,11 @@ class LitelementTags extends LitElement {
 		return tags.map((tag, index) => {
 			return html`
 				<lit-tag
-					tag=${tag}
+					tag=${JSON.stringify(tag)}
+					classNames=${JSON.stringify(this.classNames)}
 					labelField=${labelField}
-					onDelete=${() => { this.handleDelete(index) }}
-					onTagClicked=${() => { this.handleTagClick(index) }}
+					.onDelete=${() => { this.handleDelete(index) }}
+					.onTagClicked=${() => { this.handleTagClick(index) }}
 					readOnly=${readOnly}
 				/>
 			`;

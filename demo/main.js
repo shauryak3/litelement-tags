@@ -258,10 +258,10 @@ class TagApp extends LitElement {
 			<litelement-tags
 				tags=${JSON.stringify(this.tags)}
 				suggestions=${JSON.stringify(suggestions)}
-				delimiters=${delimiters}
-				handleDeleteProps=${this.handleDelete}
-				handleAddition=${this.handleAddition}
-				handleTagClickProps=${this.handleTagClick}
+				delimiters=${JSON.stringify(delimiters)}
+				.handleDeleteProps=${() => {this.handleDelete()}}
+				.handleAddition=${() => {this.handleAddition()}}
+				.handleTagClickProps=${() => {this.handleTagClick()}}
 			>
 			</litelement-tags>
 		`;
