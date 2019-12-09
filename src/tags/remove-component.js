@@ -1,20 +1,24 @@
-import { LitElement } from 'lit-element';
+import { LitElement, html } from 'lit-element';
 
 const crossStr = String.fromCharCode(215);
 
 class RemoveComponent extends LitElement {
 	static get properties () {
 		return {
-			props: { type: Object }
+			onClick: { type: Function},
+			readOnly: { type: Boolean }
 		};
 	}
 
 	render() {
-		let { props } = this;
 		return html`
-			<a onClick=${props.onClick} className=${props.className} onKeyDown=${props.onClick}>
-				${props.crossStr}
-	  		</a>
+			${this.readOnly ? html`
+				<span />
+			`:html`
+				<a onClick=${this.onClick} onKeyDown=${this.onClick}>
+				${crossStr}
+				</a>
+			`}
 		`;
 	}
 }

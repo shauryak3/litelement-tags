@@ -1,35 +1,37 @@
-import { LitElement } from 'lit-element';
+import { LitElement, html } from 'lit-element';
 
 import './remove-component';
 
 class Tag extends LitElement {
 	constructor () {
 		super();
+		this.labelField = 'text';
+		this.readOnly = false;
 	}
 	static get properties() {
 		return {
-
+			tag: { type: Object },
+			onTagClicked: { type: Function},
+			onDelete: { type: Function},
+			readOnly: { type: Boolean},
+			labelField: { type: Boolean},
 		}; 
 	}
 	render() {
+		const label = this.tag[this.labelField];
 		return html`
 			<span
-				className=${ClassNames('tag-wrapper', classNames.tag, className)}
-				style=${{opacity: isDragging ? 0 : 1, 'cursor': canDrag(props) ? 'move' : 'auto'}}
-				onClick=${props.onTagClicked}
-				onKeyDown=${props.onTagClicked}
-				onTouchStart=${props.onTagClicked}>
-				{label}
+				onClick=${this.onTagClicked}
+				onKeyDown=${this.onTagClicked}
+				onTouchStart=${this.onTagClicked}>
+				${label}
 				<remove-component
-					tag=${props.tag}
-					className=${classNames.remove}
-					removeComponent=${props.removeComponent}
-					onClick=${props.onDelete}
-					readOnly=${readOnly}
+					onClick=${this.onDelete}
+					readOnly=${this.readOnly}
 				/>
 			</span>
 		`;
 	} 
 }
 
-customElements.define('tag', Tag);
+customElements.define('lit-tag', Tag);
