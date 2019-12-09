@@ -245,8 +245,9 @@ class TagApp extends LitElement {
 		this.tags = tags;
 	}
 
-	handleAddition(tag) {
+	async handleAddition(tag) {
 		this.tags.push(tag);
+		await this.requestUpdate();
 	}
 
 	handleTagClick(index) {
@@ -260,7 +261,7 @@ class TagApp extends LitElement {
 				suggestions=${JSON.stringify(suggestions)}
 				delimiters=${JSON.stringify(delimiters)}
 				.handleDeleteProps=${() => {this.handleDelete()}}
-				.handleAddition=${() => {this.handleAddition()}}
+				.handleAddition=${(tag) => {this.handleAddition(tag)}}
 				.handleTagClickProps=${() => {this.handleTagClick()}}
 			>
 			</litelement-tags>

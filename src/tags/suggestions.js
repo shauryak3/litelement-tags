@@ -3,6 +3,8 @@ import { LitElement, html } from 'lit-element';
 import isEqual from 'lodash/isEqual';
 import escape from 'lodash/escape';
 
+const minQueryLength = 2;
+
 const maybeScrollSuggestionIntoView = (suggestionEl, suggestionsContainer) => {
 	const containerHeight = suggestionsContainer.offsetHeight;
 	const suggestionHeight = suggestionEl.offsetHeight;
@@ -20,7 +22,6 @@ const maybeScrollSuggestionIntoView = (suggestionEl, suggestionsContainer) => {
 class Suggestions extends LitElement {
 	constructor() {
 		super();
-		this.minQueryLength = 2;
 		this.suggestionsContainer = this.parentNode;
 	}
 	static get properties() {
@@ -30,11 +31,10 @@ class Suggestions extends LitElement {
 			suggestions: { type: Array },
 			handleClick: { type: Function },
 			handleHover: { type: Function },
-			minQueryLength: { type: Number },
 			isFocused: { type: Boolean },
 			classNames: { type: Object },
 			labelField: { type: String },
-			suggestionsContainer: { type: Object}
+			suggestionsContainer: { type: Object }
 		};
 	}
 
@@ -79,33 +79,34 @@ class Suggestions extends LitElement {
 	}
 
 	shouldRenderSuggestions(query) {
-		return query.length >= this.minQueryLength && this.isFocused;
+		let shouldRender = query.length >= minQueryLength && this.isFocused;
+		return shouldRender;
 	}
 
 	renderSuggestion(item, query) {
-		return html`<span dangerouslySetInnerHTML=${this.markIt(item, query)} />`;
+		return html`<span>${item.text}</span>`;
 	}
 
 	render() {
 		const suggestions = this.suggestions.map((item, i) => {
 			return html`
 				<li
-				  onMouseDown=${this.handleClick.bind(null, i)}
-				  onTouchStart=${this.handleClick.bind(null, i)}
-				  onMouseOver=${this.handleHover.bind(null, i)}
-				  className=${
-					i === this.selectedIndex ? this.classNames.activeSuggestion : ''
-				}>
+					@click=${() => {this.handleClick(i)}}
+					@mouseDown=${() => {this.handleClick(i)}}
+					@touchStart=${() => {this.handleClick(i)}}
+					@mouseOver=${this.handleHover.bind(null, i)}
+					className=${
+						i === this.selectedIndex ? this.classNames.activeSuggestion : ''
+					}
+				>
 					${this.renderSuggestion(item, this.query)}
 				</li>
 			  `;
 		});
-
 		// use the override, if provided
 		if (suggestions.length === 0 || !this.shouldRenderSuggestions(this.query)) {
 			return null;
 		}
-
 		return html`
 		<div
 			className=${this.classNames.suggestions}>

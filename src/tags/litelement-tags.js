@@ -79,11 +79,12 @@ class LitelementTags extends LitElement {
 		};
 	}
 
-	// connectedCallback() {
-	// 	if (this.autofocus && !this.readOnly) {
-	// 		this.resetAndFocusInput();
-	// 	}
-	// }
+	connectedCallback() {
+		super.connectedCallback();
+		if (this.autofocus && !this.readOnly) {
+			this.resetAndFocusInput();
+		}
+	}
 
 	render() {
 		const tagItems = this.getTagItems();
@@ -126,9 +127,8 @@ class LitelementTags extends LitElement {
 					suggestions=${JSON.stringify(suggestions)}
 					labelField=${this.labelField}
 					selectedIndex=${selectedIndex}
-					.handleClick=${() => {this.handleSuggestionClick()}}
+					.handleClick=${(i) => {this.handleSuggestionClick(i)}}
 					.handleHover=${() => {this.handleSuggestionHover()}}
-					.minQueryLength=${() => {this.minQueryLength()}}
 					shouldRenderSuggestions=${this.shouldRenderSuggestions}
 					isFocused=${this.isFocused}
 					classNames=${JSON.stringify(this.classNames)}
@@ -169,16 +169,16 @@ class LitelementTags extends LitElement {
 
 	resetAndFocusInput() {
 		this.query = '';
-		if (this.shadowRoot.querySelector('textInput')) {
-			this.shadowRoot.querySelector('textInput').value = '';
-			this.shadowRoot.querySelector('textInput').focus();
+		if (this.shadowRoot.querySelector('input')) {
+			this.shadowRoot.querySelector('input').value = '';
+			this.shadowRoot.querySelector('input').focus();
 		}
 	}
 
 	handleDelete(i, e) {
 		this.handleDeleteProps(i, e);
 		if (!this.resetInputOnDelete) {
-			this.shadowRoot.querySelector('textInput') && this.shadowRoot.querySelector('textInput').focus();
+			this.shadowRoot.querySelector('input') && this.shadowRoot.querySelector('input').focus();
 		} else {
 			this.resetAndFocusInput();
 		}
@@ -190,7 +190,7 @@ class LitelementTags extends LitElement {
 			this.handleTagClickProps(i, e);
 		}
 		if (!this.resetInputOnDelete) {
-			this.shadowRoot.querySelector('textInput') && this.shadowRoot.querySelector('textInput').focus();
+			this.shadowRoot.querySelector('input') && this.shadowRoot.querySelector('input').focus();
 		} else {
 			this.resetAndFocusInput();
 		}
@@ -201,6 +201,7 @@ class LitelementTags extends LitElement {
 		// 	this.handleInputChangeProps(e.target.value);
 		// }
 		const query = e.target.value.trim();
+		this.inputValue =  query;
 		const suggestions = this.filteredSuggestions(query, this.suggestions);
 		this.query = query;
 		this.suggestions = suggestions;
@@ -219,8 +220,8 @@ class LitelementTags extends LitElement {
 		const value = e.target.value;
 		if (this.handleInputBlurProps) {
 			this.handleInputBlurProps(value);
-			if (this.shadowRoot.querySelector('textInput')) {
-				this.shadowRoot.querySelector('textInput').value = '';
+			if (this.shadowRoot.querySelector('input')) {
+				this.shadowRoot.querySelector('input').value = '';
 			}
 		}
 		this.isFocused = false;
