@@ -16,7 +16,7 @@ class RemoveComponent extends LitElement {
 			${this.readOnly ? html`
 				<span />
 			`: html`
-				<a onClick=${this.onClick} className=${this.className} onKeyDown=${this.onClick}>
+				<a onClick=${this.onClick} class=${this.className} onKeyDown=${this.onClick}>
 				${crossStr}
 				</a>
 			`}

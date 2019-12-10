@@ -22,13 +22,13 @@ class Tag extends LitElement {
 		const label = this.tag[this.labelField];
 		return html`
 			<span
-				className=${ClassNames('tag-wrapper', this.classNames.tag)}
+				class=${ClassNames('tag-wrapper', this.classNames.tag)}
 				onClick=${this.onTagClicked}
 				onKeyDown=${this.onTagClicked}
 				onTouchStart=${this.onTagClicked}>
 				${label}
 				<remove-component
-					className=${this.classNames.remove}
+					class=${this.classNames.remove}
 					onClick=${this.onDelete}
 					readOnly=${this.readOnly}
 				/>

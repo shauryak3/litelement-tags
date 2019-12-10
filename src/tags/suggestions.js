@@ -90,7 +90,7 @@ class Suggestions extends LitElement {
 					@mousedown=${() => {this.handleClick(i)}}
 					@touchstart=${() => {this.handleClick(i)}}
 					@mouseover=${() => {this.handleHover(i)}}
-					className=${
+					class=${
 						i === this.selectedIndex ? this.classNames.activeSuggestion : ''
 					}
 				>
@@ -101,7 +101,7 @@ class Suggestions extends LitElement {
 		return html`
 			${suggestions.length? html`
 				<div
-					className=${this.classNames.suggestions}>
+					class=${this.classNames.suggestions}>
 					<ul> ${suggestions} </ul>
 				</div>
 			`:html``}
