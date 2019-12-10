@@ -105,7 +105,7 @@ class LitelementTags extends LitElement {
 		const position = !inline ? INPUT_FIELD_POSITIONS.BOTTOM : inputFieldPosition;
 
 		const tagInput = !this.readOnly ?
-			html`<div className=${this.classNames.tagInput}>
+			html`<div class=${this.classNames.tagInput}>
 				<input
 					class=${this.classNames.tagInputField}
 					type="text"
@@ -135,9 +135,9 @@ class LitelementTags extends LitElement {
 			</div>`
 		: html``;
 		return html`
-			<div className=${ClassNames(this.classNames.tags, 'react-tags-wrapper')}>
+			<div class=${ClassNames(this.classNames.tags, 'react-tags-wrapper')}>
 				${position === INPUT_FIELD_POSITIONS.TOP ? tagInput : html``}
-				<div className=${this.classNames.selected}>
+				<div class=${this.classNames.selected}>
 				${tagItems}
 				${position === INPUT_FIELD_POSITIONS.INLINE ? tagInput : html``}
 				</div>
@@ -264,13 +264,13 @@ class LitelementTags extends LitElement {
 		}
 
 		// when backspace key is pressed and query is blank, delete tag
-		if (
-			e.keyCode === KEYS.BACKSPACE &&
-			query === '' &&
-			this.allowDeleteFromEmptyInput
-		) {
-			this.handleDelete(this.tags.length - 1, e);
-		}
+		// if (
+		// 	e.keyCode === KEYS.BACKSPACE &&
+		// 	query === '' &&
+		// 	this.allowDeleteFromEmptyInput
+		// ) {
+		// 	this.handleDelete(this.tags.length - 1, e);
+		// }
 
 		// when backspace key is pressed and query is not empty -> update suggestions
 		if ( e.keyCode === KEYS.BACKSPACE) {
