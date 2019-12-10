@@ -1,8 +1,6 @@
 import { LitElement, html } from 'lit-element';
 import noop from 'lodash/noop';
-import ClassNames from 'classnames';
 import uniq from 'lodash/uniq';
-import memoizeOne from 'memoize-one';
 
 import './suggestions';
 import './tag';
@@ -14,8 +12,7 @@ import {
 	KEYS,
 	DEFAULT_PLACEHOLDER,
 	DEFAULT_LABEL_FIELD,
-	DEFAULT_CLASSNAMES,
-	INPUT_FIELD_POSITIONS,
+	DEFAULT_CLASSNAMES
 } from './constants';
 
 
@@ -28,8 +25,7 @@ class LitelementTags extends LitElement {
 		this.allSuggestions = [];
 		this.delimiters = [KEYS.ENTER, KEYS.TAB];
 		this.autofocus = true;
-		this.inline = true; // TODO= Remove in v7.x.x
-		this.inputFieldPosition = INPUT_FIELD_POSITIONS.INLINE;
+		this.inline = true;
 		this.handleDeleteProps = noop;
 		this.handleAddition = noop;
 		this.allowDeleteFromEmptyInput = true;
@@ -43,7 +39,6 @@ class LitelementTags extends LitElement {
 		this.selectedIndex = -1;
 		this.isFocused = false;
 		this.query = '';
-		this.classNames = { ...DEFAULT_CLASSNAMES, ...this.classNames };
 	}
 
 	static get properties() {
@@ -54,7 +49,6 @@ class LitelementTags extends LitElement {
 			suggestions: { type: Array },
 			delimiters: { type: Array },
 			autofocus: { type: Boolean },
-			inline: { type: Boolean },
 			inputFieldPosition: { type: String },
 			handleAddition: { type: Function },
 			allowDeleteFromEmptyInput: { type: Boolean },
@@ -75,8 +69,7 @@ class LitelementTags extends LitElement {
 			handleInputFocusProps: { type: Function },
 			handleInputBlurProps: { type: Function },
 			id: { type: String },
-			shouldRenderSuggestions: { type: Function },
-			classNames: { type: Object}
+			shouldRenderSuggestions: { type: Function }
 		};
 	}
 
@@ -97,30 +90,28 @@ class LitelementTags extends LitElement {
 			placeholder,
 			name: inputName,
 			id: inputId,
-			maxLength,
-			inline,
-			inputFieldPosition,
+			maxLength
 		} = this;
 
-		const position = !inline ? INPUT_FIELD_POSITIONS.BOTTOM : inputFieldPosition;
-
-		const tagInput = !this.readOnly ?
-			html`<div class=${this.classNames.tagInput}>
-				<input
-					class=${this.classNames.tagInputField}
-					type="text"
-					placeholder=${placeholder}
-					aria-label=${placeholder}
-					@focus=${this.handleFocus}
-					@blur=${this.handleBlur}
-					@input=${this.handleChange}
-					@keydown=${this.handleKeyDown}
-					@paste=${this.handlePaste}
-					name=${inputName}
-					id=${inputId}
-					maxLength=${maxLength}
-				></input>
-
+		return html`
+			<div class=${'litelement-tags-wrapper'}>
+				<div class=${DEFAULT_CLASSNAMES.selected}>
+					${tagItems}
+					<input
+						class=${DEFAULT_CLASSNAMES.tagInputField}
+						type="text"
+						placeholder=${placeholder}
+						aria-label=${placeholder}
+						@focus=${this.handleFocus}
+						@blur=${this.handleBlur}
+						@input=${this.handleChange}
+						@keydown=${this.handleKeyDown}
+						@paste=${this.handlePaste}
+						name=${inputName}
+						id=${inputId}
+						maxLength=${maxLength}
+					></input>
+				</div>
 				<lit-suggestions
 					query=${query}
 					suggestions=${JSON.stringify(suggestions)}
@@ -130,18 +121,7 @@ class LitelementTags extends LitElement {
 					.handleHover=${(i) => {this.handleSuggestionHover(i)}}
 					shouldRenderSuggestions=${this.shouldRenderSuggestions}
 					isFocused=${this.isFocused}
-					classNames=${JSON.stringify(this.classNames)}
 				/>
-			</div>`
-		: html``;
-		return html`
-			<div class=${ClassNames(this.classNames.tags, 'react-tags-wrapper')}>
-				${position === INPUT_FIELD_POSITIONS.TOP ? tagInput : html``}
-				<div class=${this.classNames.selected}>
-				${tagItems}
-				${position === INPUT_FIELD_POSITIONS.INLINE ? tagInput : html``}
-				</div>
-				${position === INPUT_FIELD_POSITIONS.BOTTOM ? tagInput : html``}
 			</div>
 		`;
 	}
@@ -161,10 +141,8 @@ class LitelementTags extends LitElement {
 		let filtered = exactSuggestions.filter((suggestion) => {
 			return !tagsText.includes(suggestion.text);
 		})
-		// const partialSuggestions = suggestions.filter((item) => {
-		// 	return this.getQueryIndex(query, item) > 0;
-		// });
-		return filtered; // .concat(partialSuggestions);
+		
+		return filtered;
 	}
 
 	getQueryIndex(query, item) {
@@ -181,14 +159,13 @@ class LitelementTags extends LitElement {
 		}
 	}
 
-	handleDelete(i, e) {
-		this.handleDeleteProps(i, e);
+	handleDelete(id) {
+		this.handleDeleteProps(id);
 		if (!this.resetInputOnDelete) {
 			this.shadowRoot.querySelector('input') && this.shadowRoot.querySelector('input').focus();
 		} else {
 			this.resetAndFocusInput();
 		}
-		e.stopPropagation();
 	}
 
 	handleTagClick(i, e) {
@@ -203,10 +180,6 @@ class LitelementTags extends LitElement {
 	}
 
 	async handleChange(e) {
-		// if (this.handleInputChangeProps) {
-		// 	this.handleInputChangeProps(e.target.value);
-		// }
-		// const query = e.target.value.trim();
 		const query = this.shadowRoot.querySelector('input').value.trim();
 		const suggestions = this.filteredSuggestions(query, this.allSuggestions);
 		this.query = query;
@@ -262,15 +235,6 @@ class LitelementTags extends LitElement {
 				this.addTag(selectedQuery);
 			}
 		}
-
-		// when backspace key is pressed and query is blank, delete tag
-		// if (
-		// 	e.keyCode === KEYS.BACKSPACE &&
-		// 	query === '' &&
-		// 	this.allowDeleteFromEmptyInput
-		// ) {
-		// 	this.handleDelete(this.tags.length - 1, e);
-		// }
 
 		// when backspace key is pressed and query is not empty -> update suggestions
 		if ( e.keyCode === KEYS.BACKSPACE) {
@@ -362,18 +326,15 @@ class LitelementTags extends LitElement {
 	getTagItems() {
 		const {
 			tags,
-			labelField,
-			readOnly
+			labelField
 		} = this;
-		return tags.map((tag, index) => {
+
+		return tags.map((tag) => {
 			return html`
 				<lit-tag
 					tag=${JSON.stringify(tag)}
-					classNames=${JSON.stringify(this.classNames)}
 					labelField=${labelField}
-					.onDelete=${() => { this.handleDelete(index) }}
-					.onTagClicked=${() => { this.handleTagClick(index) }}
-					readOnly=${readOnly}
+					.onDelete=${(id) => { this.handleDelete(id) }}
 				/>
 			`;
 		});

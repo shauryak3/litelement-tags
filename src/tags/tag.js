@@ -1,37 +1,26 @@
 import { LitElement, html } from 'lit-element';
-import ClassNames from 'classnames';
-import './remove-component';
+
+import { DEFAULT_CLASSNAMES } from './constants';
 
 class Tag extends LitElement {
-	constructor () {
-		super();
-		this.labelField = 'text';
-		this.readOnly = false;
-	}
 	static get properties() {
 		return {
 			tag: { type: Object },
-			onTagClicked: { type: Function},
 			onDelete: { type: Function},
-			readOnly: { type: Boolean},
-			labelField: { type: String},
-			classNames: { type: Object}
+			labelField: { type: String}
 		}; 
 	}
+
 	render() {
 		const label = this.tag[this.labelField];
+
 		return html`
 			<span
-				class=${ClassNames('tag-wrapper', this.classNames.tag)}
-				onClick=${this.onTagClicked}
-				onKeyDown=${this.onTagClicked}
-				onTouchStart=${this.onTagClicked}>
+				class=${DEFAULT_CLASSNAMES.tag}>
 				${label}
-				<remove-component
-					class=${this.classNames.remove}
-					onClick=${this.onDelete}
-					readOnly=${this.readOnly}
-				/>
+				<a class=${DEFAULT_CLASSNAMES.remove} @click=${() => {this.onDelete(this.tag.id)}}>
+					X
+				</a>
 			</span>
 		`;
 	} 

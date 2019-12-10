@@ -240,18 +240,14 @@ class TagApp extends LitElement {
 		};
 	}
 
-	handleDelete(i) {
-		let tags = this.tags.filter((tag, index) => index !== i);
+	handleDelete(id) {
+		let tags = this.tags.filter((tag) => tag.id !== id);
 		this.tags = tags;
 	}
 
 	async handleAddition(tag) {
 		this.tags.push(tag);
 		await this.requestUpdate();
-	}
-
-	handleTagClick(index) {
-		console.log('The tag at index ' + index + ' was clicked');
 	}
 
 	render() {
@@ -261,9 +257,8 @@ class TagApp extends LitElement {
 				suggestions=${JSON.stringify(suggestions)}
 				allSuggestions=${JSON.stringify(suggestions)}
 				delimiters=${JSON.stringify(delimiters)}
-				.handleDeleteProps=${() => {this.handleDelete()}}
+				.handleDeleteProps=${(id) => {this.handleDelete(id)}}
 				.handleAddition=${(tag) => {this.handleAddition(tag)}}
-				.handleTagClickProps=${() => {this.handleTagClick()}}
 			>
 			</litelement-tags>
 		`;
