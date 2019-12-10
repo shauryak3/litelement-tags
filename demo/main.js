@@ -259,6 +259,7 @@ class TagApp extends LitElement {
 			<litelement-tags
 				tags=${JSON.stringify(this.tags)}
 				suggestions=${JSON.stringify(suggestions)}
+				allSuggestions=${JSON.stringify(suggestions)}
 				delimiters=${JSON.stringify(delimiters)}
 				.handleDeleteProps=${() => {this.handleDelete()}}
 				.handleAddition=${(tag) => {this.handleAddition(tag)}}

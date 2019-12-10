@@ -1,9 +1,6 @@
 import { LitElement, html } from 'lit-element';
 
 import isEqual from 'lodash/isEqual';
-import escape from 'lodash/escape';
-
-const minQueryLength = 2;
 
 const maybeScrollSuggestionIntoView = (suggestionEl, suggestionsContainer) => {
 	const containerHeight = suggestionsContainer.offsetHeight;
@@ -34,17 +31,15 @@ class Suggestions extends LitElement {
 			isFocused: { type: Boolean },
 			classNames: { type: Object },
 			labelField: { type: String },
-			suggestionsContainer: { type: Object }
+			suggestionsContainer: { type: Object },
+			renderSugg: {type: Number}
 		};
 	}
 
 	shouldUpdate(changedProps) {
-		const shouldRenderSuggestions = this.shouldRenderSuggestionsProps || this.shouldRenderSuggestions;
 		return (
 			this.isFocused !== changedProps.get('isFocused') ||
-			!isEqual(changedProps.get('suggestions'), this.suggestions) ||
-			shouldRenderSuggestions(this.query) ||
-			shouldRenderSuggestions(this.query) !== shouldRenderSuggestions(changedProps.get('query'))
+			!isEqual(changedProps.get('suggestions'), this.suggestions)
 		);
 	}
 
@@ -67,21 +62,21 @@ class Suggestions extends LitElement {
 		}
 	}
 
-	markIt(input, query) {
-		const escapedRegex = query.trim().replace(/[-\\^$*+?.()|[\]{}]/g, '\\$&');
-		const { [this.labelField]: labelValue } = input;
+	// markIt(input, query) {
+	// 	const escapedRegex = query.trim().replace(/[-\\^$*+?.()|[\]{}]/g, '\\$&');
+	// 	const { [this.labelField]: labelValue } = input;
 
-		return {
-			__html: labelValue.replace(RegExp(escapedRegex, 'gi'), (x) => {
-				return html`<mark>${escape(x)}</mark>`;
-			}),
-		};
-	}
+	// 	return {
+	// 		__html: labelValue.replace(RegExp(escapedRegex, 'gi'), (x) => {
+	// 			return html`<mark>${escape(x)}</mark>`;
+	// 		}),
+	// 	};
+	// }
 
-	shouldRenderSuggestions(query) {
-		let shouldRender = query.length >= minQueryLength && this.isFocused;
-		return shouldRender;
-	}
+	// shouldRenderSuggestions(query) {
+	// 	let shouldRender = query.length >= minQueryLength && this.isFocused;
+	// 	return shouldRender;
+	// }
 
 	renderSuggestion(item, query) {
 		return html`<span>${item.text}</span>`;
@@ -92,9 +87,9 @@ class Suggestions extends LitElement {
 			return html`
 				<li
 					@click=${() => {this.handleClick(i)}}
-					@mouseDown=${() => {this.handleClick(i)}}
-					@touchStart=${() => {this.handleClick(i)}}
-					@mouseOver=${this.handleHover.bind(null, i)}
+					@mousedown=${() => {this.handleClick(i)}}
+					@touchstart=${() => {this.handleClick(i)}}
+					@mouseover=${() => {this.handleHover(i)}}
 					className=${
 						i === this.selectedIndex ? this.classNames.activeSuggestion : ''
 					}
@@ -103,15 +98,13 @@ class Suggestions extends LitElement {
 				</li>
 			  `;
 		});
-		// use the override, if provided
-		if (suggestions.length === 0 || !this.shouldRenderSuggestions(this.query)) {
-			return null;
-		}
 		return html`
-		<div
-			className=${this.classNames.suggestions}>
-			<ul> ${suggestions} </ul>
-		</div>
+			${suggestions.length? html`
+				<div
+					className=${this.classNames.suggestions}>
+					<ul> ${suggestions} </ul>
+				</div>
+			`:html``}
 		`;
 	}
 }
