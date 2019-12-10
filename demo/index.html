@@ -11,24 +11,23 @@
 
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="mobile-web-app-status-bar-style" content="black" />
-	<meta name="mobile-web-app-title" content="TutorialApp" />
-	<link rel="stylesheet" href="http://getskeleton.com/dist/css/normalize.css">
-	<link rel="stylesheet" href="http://getskeleton.com/dist/css/skeleton.css">
-	<link rel="stylesheet" href="../demo/tag.css">
+    <meta name="mobile-web-app-title" content="TutorialApp" />
 
     <script>
       if (!window.customElements) {
         document.write('<!--');
       }
     </script>
-    <script src="../node_modules/@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js"></script>
-    <!-- ! DO NOT REMOVE THIS COMMENT, WE NEED ITS CLOSING MARKER -->
+    <script src="../vendor/custom-elements-es5-adapter.js"></script>
+	<!-- ! DO NOT REMOVE THIS COMMENT, WE NEED ITS CLOSING MARKER -->
+	<script type="module" src="./main.js"></script>
   </head>
 
   <body>
+    <header><h1>Todo app</h1></header>
 
     <main></main>
-	<script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
-	<tag-app></tag-app>
+	<script src="./vendor/webcomponents-loader.js"></script>
+	<app></app>
   </body>
 </html>

@@ -12,14 +12,14 @@ export const DEFAULT_PLACEHOLDER = 'Add new tag';
 export const DEFAULT_LABEL_FIELD = 'text';
 
 export const DEFAULT_CLASSNAMES = {
-	tags: 'LitElementTags__tags',
-	tagInput: 'LitElementTags__tagInput',
-	tagInputField: 'LitElementTags__tagInputField',
-	selected: 'LitElementTags__selected',
-	tag: 'LitElementTags__tag',
-	remove: 'LitElementTags__remove',
-	suggestions: 'LitElementTags__suggestions',
-	activeSuggestion: 'LitElementTags__activeSuggestion',
+	tags: 'ReactTags__tags',
+	tagInput: 'ReactTags__tagInput',
+	tagInputField: 'ReactTags__tagInputField',
+	selected: 'ReactTags__selected',
+	tag: 'ReactTags__tag',
+	remove: 'ReactTags__remove',
+	suggestions: 'ReactTags__suggestions',
+	activeSuggestion: 'ReactTags__activeSuggestion',
 };
 
 export const INPUT_FIELD_POSITIONS = {
