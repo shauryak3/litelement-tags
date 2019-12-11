@@ -21,8 +21,7 @@ class LitTags extends LitElement {
 		super();
 		this.placeholder = DEFAULT_PLACEHOLDER;
 		this.labelField = DEFAULT_LABEL_FIELD;
-		this.suggestions = [];
-		this.allSuggestions = [];
+		this.suggestions = this.allSuggestions;
 		this.delimiters = [KEYS.ENTER, KEYS.TAB];
 		this.autofocus = true;
 		this.inline = true;

@@ -252,14 +252,14 @@ class TagApp extends LitElement {
 
 	render() {
 		return html`
-			<litelement-tags
+			<lit-tags
 				tags=${JSON.stringify(this.tags)}
 				allSuggestions=${JSON.stringify(suggestions)}
 				delimiters=${JSON.stringify(delimiters)}
 				.handleDeleteProps=${(id) => {this.handleDelete(id)}}
 				.handleAddition=${(tag) => {this.handleAddition(tag)}}
 			>
-			</litelement-tags>
+			</lit-tags>
 		`;
 	}
 }
