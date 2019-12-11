@@ -1,6 +1,6 @@
 import { LitElement, html } from 'lit-element';
 
-import '../src/tags/litelement-tags';
+import '../src/tags/lit-tags';
 // List of countries in the world
 const Countries = [
 	'Afghanistan',
@@ -254,7 +254,6 @@ class TagApp extends LitElement {
 		return html`
 			<litelement-tags
 				tags=${JSON.stringify(this.tags)}
-				suggestions=${JSON.stringify(suggestions)}
 				allSuggestions=${JSON.stringify(suggestions)}
 				delimiters=${JSON.stringify(delimiters)}
 				.handleDeleteProps=${(id) => {this.handleDelete(id)}}

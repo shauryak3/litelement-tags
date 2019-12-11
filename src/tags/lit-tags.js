@@ -16,7 +16,7 @@ import {
 } from './constants';
 
 
-class LitelementTags extends LitElement {
+class LitTags extends LitElement {
 	constructor() {
 		super();
 		this.placeholder = DEFAULT_PLACEHOLDER;
@@ -341,4 +341,4 @@ class LitelementTags extends LitElement {
 	}
 }
 
-customElements.define('litelement-tags', LitelementTags);
+customElements.define('lit-tags', LitTags);
