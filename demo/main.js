@@ -214,7 +214,7 @@ const Countries = [
 const suggestions = Countries.map((country) => {
 	return {
 		id: country,
-		text: country,
+		name: country,
 	};
 });
 
@@ -229,8 +229,8 @@ class TagApp extends LitElement {
 	constructor() {
 		super();
 		this.tags = [
-			{ id: 'Thailand', text: 'Thailand' },
-			{ id: 'India', text: 'India' },
+			{ id: 'Thailand', name: 'Thailand' },
+			{ id: 'India', name: 'India' },
 		];
 	}
 

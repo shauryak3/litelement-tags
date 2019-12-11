@@ -133,12 +133,12 @@ class LitTags extends LitElement {
 		let exactSuggestions = suggestions.filter((item) => {
 			return this.getQueryIndex(query, item) === 0;
 		});
-		let tagsText = [];
+		let tagsName = [];
 		this.tags.map((tag) => {
-			tagsText.push(tag.text);
+			tagsName.push(tag.name);
 		})
 		let filtered = exactSuggestions.filter((suggestion) => {
-			return !tagsText.includes(suggestion.text);
+			return !tagsName.includes(suggestion.name);
 		})
 		
 		return filtered;
