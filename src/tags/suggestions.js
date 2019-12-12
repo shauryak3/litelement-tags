@@ -68,7 +68,7 @@ class Suggestions extends LitElement {
 					@mouseover=${() => {this.handleHover(i)}}
 					class=${ i === this.selectedIndex ? DEFAULT_CLASSNAMES.activeSuggestion : ''}
 					>
-					${item.text}
+					${item.name}
 				</li>
 			  `;
 		});

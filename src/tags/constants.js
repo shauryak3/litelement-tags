@@ -9,7 +9,7 @@ export const KEYS = {
 
 export const DEFAULT_PLACEHOLDER = 'Add new tag';
 
-export const DEFAULT_LABEL_FIELD = 'text';
+export const DEFAULT_LABEL_FIELD = 'name';
 
 export const DEFAULT_CLASSNAMES = {
 	tags: 'litelement__tags',

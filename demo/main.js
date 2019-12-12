@@ -1,6 +1,6 @@
 import { LitElement, html } from 'lit-element';
 
-import '../src/tags/litelement-tags';
+import '../src/tags/lit-tags';
 // List of countries in the world
 const Countries = [
 	'Afghanistan',
@@ -214,7 +214,7 @@ const Countries = [
 const suggestions = Countries.map((country) => {
 	return {
 		id: country,
-		text: country,
+		name: country,
 	};
 });
 
@@ -229,8 +229,8 @@ class TagApp extends LitElement {
 	constructor() {
 		super();
 		this.tags = [
-			{ id: 'Thailand', text: 'Thailand' },
-			{ id: 'India', text: 'India' },
+			{ id: 'Thailand', name: 'Thailand' },
+			{ id: 'India', name: 'India' },
 		];
 	}
 
@@ -247,20 +247,20 @@ class TagApp extends LitElement {
 
 	async handleAddition(tag) {
 		this.tags.push(tag);
+		console.log(this.tags);
 		await this.requestUpdate();
 	}
 
 	render() {
 		return html`
-			<litelement-tags
+			<lit-tags
 				tags=${JSON.stringify(this.tags)}
-				suggestions=${JSON.stringify(suggestions)}
 				allSuggestions=${JSON.stringify(suggestions)}
 				delimiters=${JSON.stringify(delimiters)}
 				.handleDeleteProps=${(id) => {this.handleDelete(id)}}
 				.handleAddition=${(tag) => {this.handleAddition(tag)}}
 			>
-			</litelement-tags>
+			</lit-tags>
 		`;
 	}
 }

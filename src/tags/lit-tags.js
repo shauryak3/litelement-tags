@@ -16,13 +16,12 @@ import {
 } from './constants';
 
 
-class LitelementTags extends LitElement {
+class LitTags extends LitElement {
 	constructor() {
 		super();
 		this.placeholder = DEFAULT_PLACEHOLDER;
 		this.labelField = DEFAULT_LABEL_FIELD;
-		this.suggestions = [];
-		this.allSuggestions = [];
+		this.suggestions = this.allSuggestions;
 		this.delimiters = [KEYS.ENTER, KEYS.TAB];
 		this.autofocus = true;
 		this.inline = true;
@@ -134,12 +133,12 @@ class LitelementTags extends LitElement {
 		let exactSuggestions = suggestions.filter((item) => {
 			return this.getQueryIndex(query, item) === 0;
 		});
-		let tagsText = [];
+		let tagsName = [];
 		this.tags.map((tag) => {
-			tagsText.push(tag.text);
+			tagsName.push(tag.name);
 		})
 		let filtered = exactSuggestions.filter((suggestion) => {
-			return !tagsText.includes(suggestion.text);
+			return !tagsName.includes(suggestion.name);
 		})
 		
 		return filtered;
@@ -159,8 +158,8 @@ class LitelementTags extends LitElement {
 		}
 	}
 
-	handleDelete(id) {
-		this.handleDeleteProps(id);
+	handleDelete(tag) {
+		this.handleDeleteProps(tag);
 		if (!this.resetInputOnDelete) {
 			this.shadowRoot.querySelector('input') && this.shadowRoot.querySelector('input').focus();
 		} else {
@@ -285,10 +284,10 @@ class LitelementTags extends LitElement {
 		if (!tag.id || !tag[labelField]) {
 			return;
 		}
-		const existingKeys = tags.map((tag) => tag.id.toLowerCase());
+		const existingKeys = tags.map((tag) => tag.id);
 
 		// Return if tag has been already added
-		if (allowUnique && existingKeys.indexOf(tag.id.toLowerCase()) >= 0) {
+		if (allowUnique && existingKeys.indexOf(tag.id) >= 0) {
 			return;
 		}
 		if (this.autocomplete) {
@@ -334,11 +333,11 @@ class LitelementTags extends LitElement {
 				<lit-tag
 					tag=${JSON.stringify(tag)}
 					labelField=${labelField}
-					.onDelete=${(id) => { this.handleDelete(id) }}
+					.onDelete=${(tag) => { this.handleDelete(tag) }}
 				/>
 			`;
 		});
 	}
 }
 
-customElements.define('litelement-tags', LitelementTags);
+customElements.define('lit-tags', LitTags);

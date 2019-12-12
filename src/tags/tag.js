@@ -18,7 +18,7 @@ class Tag extends LitElement {
 			<span
 				class=${DEFAULT_CLASSNAMES.tag}>
 				${label}
-				<a class=${DEFAULT_CLASSNAMES.remove} @click=${() => {this.onDelete(this.tag.id)}}>
+				<a class=${DEFAULT_CLASSNAMES.remove} @click=${() => {this.onDelete(this.tag)}}>
 					X
 				</a>
 			</span>
