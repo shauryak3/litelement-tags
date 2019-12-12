@@ -93,7 +93,7 @@ class LitTags extends LitElement {
 		} = this;
 
 		return html`
-			<div class=${'litelement-tags-wrapper'}>
+			<div class="litelement-tags-wrapper">
 				<div class=${DEFAULT_CLASSNAMES.selected}>
 					${tagItems}
 					<input
@@ -108,8 +108,7 @@ class LitTags extends LitElement {
 						@paste=${this.handlePaste}
 						name=${inputName}
 						id=${inputId}
-						maxLength=${maxLength}
-					></input>
+						maxLength=${maxLength}/>
 				</div>
 				<lit-suggestions
 					query=${query}
@@ -119,8 +118,8 @@ class LitTags extends LitElement {
 					.handleClick=${(i) => {this.handleSuggestionClick(i)}}
 					.handleHover=${(i) => {this.handleSuggestionHover(i)}}
 					shouldRenderSuggestions=${this.shouldRenderSuggestions}
-					isFocused=${this.isFocused}
-				/>
+					isFocused=${this.isFocused}>
+				</lit-suggestions>
 			</div>
 		`;
 	}
