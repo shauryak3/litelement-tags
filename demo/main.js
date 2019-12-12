@@ -247,6 +247,7 @@ class TagApp extends LitElement {
 
 	async handleAddition(tag) {
 		this.tags.push(tag);
+		console.log(this.tags);
 		await this.requestUpdate();
 	}
 

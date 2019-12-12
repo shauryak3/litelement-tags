@@ -158,8 +158,8 @@ class LitTags extends LitElement {
 		}
 	}
 
-	handleDelete(id) {
-		this.handleDeleteProps(id);
+	handleDelete(tag) {
+		this.handleDeleteProps(tag);
 		if (!this.resetInputOnDelete) {
 			this.shadowRoot.querySelector('input') && this.shadowRoot.querySelector('input').focus();
 		} else {
@@ -284,10 +284,10 @@ class LitTags extends LitElement {
 		if (!tag.id || !tag[labelField]) {
 			return;
 		}
-		const existingKeys = tags.map((tag) => tag.id.toLowerCase());
+		const existingKeys = tags.map((tag) => tag.id);
 
 		// Return if tag has been already added
-		if (allowUnique && existingKeys.indexOf(tag.id.toLowerCase()) >= 0) {
+		if (allowUnique && existingKeys.indexOf(tag.id) >= 0) {
 			return;
 		}
 		if (this.autocomplete) {
@@ -333,7 +333,7 @@ class LitTags extends LitElement {
 				<lit-tag
 					tag=${JSON.stringify(tag)}
 					labelField=${labelField}
-					.onDelete=${(id) => { this.handleDelete(id) }}
+					.onDelete=${(tag) => { this.handleDelete(tag) }}
 				/>
 			`;
 		});
