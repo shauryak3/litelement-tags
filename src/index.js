@@ -1,1 +1,1 @@
-import './styles.css';
+import './tags/lit-tags';
