@@ -243,6 +243,8 @@ class TagApp extends LitElement {
 	handleDelete(deleteTag) {
 		let tags = this.tags.filter((tag) => tag.id !== deleteTag.id);
 		this.tags = tags;
+		console.log(deleteTag);
+		console.log(this.tags);
 	}
 
 	async handleAddition(tag) {
@@ -256,7 +258,7 @@ class TagApp extends LitElement {
 				tags=${JSON.stringify(this.tags)}
 				allSuggestions=${JSON.stringify(suggestions)}
 				delimiters=${JSON.stringify(delimiters)}
-				.handleDeleteProps=${(id) => {this.handleDelete(id)}}
+				.handleDeleteProps=${(tag) => {this.handleDelete(tag)}}
 				.handleAddition=${(tag) => {this.handleAddition(tag)}}
 			>
 			</lit-tags>
