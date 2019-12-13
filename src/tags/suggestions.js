@@ -33,13 +33,6 @@ class Suggestions extends LitElement {
 		};
 	}
 
-	shouldUpdate(changedProps) {
-		return (
-			this.isFocused !== changedProps.get('isFocused') ||
-			!isEqual(changedProps.get('suggestions'), this.suggestions)
-		);
-	}
-
 	updated(changedProps) {
 		if (
 			this.suggestionsContainer &&
