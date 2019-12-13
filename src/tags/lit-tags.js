@@ -74,25 +74,28 @@ class LitTags extends LitElement {
 	}
 
 	connectedCallback() {
-		this.suggestions = this.allSuggestions;
+		this.suggestions = this.filteredSuggestions('', this.allSuggestions);
 		super.connectedCallback();
 		if (this.autofocus && !this.readOnly) {
 			this.resetAndFocusInput();
 		}
 	}
 
+	updated(changedProps) {
+		if(changedProps.has('tags')) {
+			this.suggestions = this.filteredSuggestions('', this.allSuggestions);
+		}
+	}
+
 	render() {
 		const tagItems = this.getTagItems();
 		const query = this.query.trim();
-		const selectedIndex = this.selectedIndex;
-		const suggestions = this.suggestions;
 		const {
 			placeholder,
 			name: inputName,
 			id: inputId,
 			maxLength
 		} = this;
-
 		return html`
 			<div class="litelement-tags-wrapper">
 				<div class=${DEFAULT_CLASSNAMES.selected}>
@@ -112,8 +115,12 @@ class LitTags extends LitElement {
 						maxLength=${maxLength}/>
 				</div>
 				${this.renderSuggestions ? html`
-					<lit-suggestions query=${query} suggestions=${JSON.stringify(suggestions)} labelField=${this.labelField}
-						selectedIndex=${selectedIndex} .handleClick=${(i)=> { this.handleSuggestionClick(i) }}
+					<lit-suggestions 
+						query=${query} 
+						suggestions=${JSON.stringify(this.suggestions)} 
+						labelField=${this.labelField}
+						selectedIndex=${this.selectedIndex} 
+						.handleClick=${(i)=> { this.handleSuggestionClick(i) }}
 						.handleHover=${(i) => { this.handleSuggestionHover(i) }}
 						isFocused=${this.isFocused}>
 					</lit-suggestions>
@@ -205,12 +212,12 @@ class LitTags extends LitElement {
 	}
 
 	handleKeyDown(e) {
-		let { query, selectedIndex, suggestions, selectionMode } = this;
+		let { query, suggestions, selectionMode } = this;
 		// hide suggestions menu on escape
 		if (e.keyCode === KEYS.ESCAPE) {
 			e.preventDefault();
 			e.stopPropagation();
-			selectedIndex = -1;
+			this.selectedIndex = -1;
 			selectionMode = false;
 			suggestions = [];
 		}
@@ -224,8 +231,8 @@ class LitTags extends LitElement {
 			}
 
 			const selectedQuery =
-				selectionMode && selectedIndex !== -1
-					? suggestions[selectedIndex]
+				selectionMode && this.selectedIndex !== -1
+					? suggestions[this.selectedIndex]
 					: { id: query, [this.labelField]: query };
 
 			if (selectedQuery !== '') {
@@ -237,7 +244,6 @@ class LitTags extends LitElement {
 		if ( e.keyCode === KEYS.BACKSPACE && query === '') {
 			this.renderSuggestions = false;
 			let tag = this.tags[this.tags.length - 1];
-			console.log(tag)
 			this.handleDeleteProps(tag);
 		}
 
@@ -250,14 +256,14 @@ class LitTags extends LitElement {
 		// up arrow
 		if (e.keyCode === KEYS.UP_ARROW) {
 			e.preventDefault();
-			selectedIndex = (selectedIndex <= 0 ? suggestions.length - 1 : selectedIndex - 1);
+			this.selectedIndex = (selectedIndex <= 0 ? suggestions.length - 1 : this.selectedIndex - 1);
 			selectionMode = true;
 		}
 
 		// down arrow
 		if (e.keyCode === KEYS.DOWN_ARROW) {
 			e.preventDefault();
-			selectedIndex = (suggestions.length === 0 ? -1 : (selectedIndex + 1) % suggestions.length);
+			this.selectedIndex = (suggestions.length === 0 ? -1 : (this.selectedIndex + 1) % suggestions.length);
 			selectionMode = true;
 		}
 	}
@@ -316,7 +322,7 @@ class LitTags extends LitElement {
 		this.query = '';
 		this.selectionMode = false;
 		this.selectedIndex = -1;
-		this.suggestions = this.allSuggestions;
+		this.renderSuggestions = false;
 		this.resetAndFocusInput();
 	}
 
