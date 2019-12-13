@@ -216,13 +216,13 @@ class LitTags extends LitElement {
 	}
 
 	handleKeyDown(e) {
-		let { query, suggestions, selectionMode } = this;
+		let { query, suggestions } = this;
 		// hide suggestions menu on escape
 		if (e.keyCode === KEYS.ESCAPE) {
 			e.preventDefault();
 			e.stopPropagation();
 			this.selectedIndex = -1;
-			selectionMode = false;
+			this.selectionMode = false;
 			suggestions = [];
 		}
 
@@ -235,7 +235,7 @@ class LitTags extends LitElement {
 			}
 
 			const selectedQuery =
-				selectionMode && this.selectedIndex !== -1
+				this.selectionMode && this.selectedIndex !== -1
 					? suggestions[this.selectedIndex]
 					: { id: query, [this.labelField]: query };
 
@@ -260,15 +260,15 @@ class LitTags extends LitElement {
 		// up arrow
 		if (e.keyCode === KEYS.UP_ARROW) {
 			e.preventDefault();
-			this.selectedIndex = (selectedIndex <= 0 ? suggestions.length - 1 : this.selectedIndex - 1);
-			selectionMode = true;
+			this.selectedIndex = (this.selectedIndex <= 0 ? suggestions.length - 1 : this.selectedIndex - 1);
+			this.selectionMode = true;
 		}
 
 		// down arrow
 		if (e.keyCode === KEYS.DOWN_ARROW) {
 			e.preventDefault();
 			this.selectedIndex = (suggestions.length === 0 ? -1 : (this.selectedIndex + 1) % suggestions.length);
-			selectionMode = true;
+			this.selectionMode = true;
 		}
 	}
 
