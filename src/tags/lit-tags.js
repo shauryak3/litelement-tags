@@ -38,13 +38,14 @@ class LitTags extends LitElement {
 		this.selectedIndex = -1;
 		this.isFocused = false;
 		this.query = '';
+		this.renderSuggestions = false;
 	}
 
 	static get properties() {
 		return {
 			placeholder: { type: String },
 			labelField: { type: String },
-			allSuggestions : { type: Array },
+			allSuggestions: { type: Array },
 			suggestions: { type: Array },
 			delimiters: { type: Array },
 			autofocus: { type: Boolean },
@@ -68,7 +69,7 @@ class LitTags extends LitElement {
 			handleInputFocusProps: { type: Function },
 			handleInputBlurProps: { type: Function },
 			id: { type: String },
-			shouldRenderSuggestions: { type: Function }
+			renderSuggestions: { type: Boolean }
 		};
 	}
 
@@ -96,11 +97,11 @@ class LitTags extends LitElement {
 			<div class="litelement-tags-wrapper">
 				<div class=${DEFAULT_CLASSNAMES.selected}>
 					${tagItems}
-					<input
-						class=${DEFAULT_CLASSNAMES.tagInputField}
-						type="text"
-						placeholder=${placeholder}
-						aria-label=${placeholder}
+					<input 
+						class=${DEFAULT_CLASSNAMES.tagInputField} 
+						type="text" placeholder=${placeholder}
+						aria-label=${placeholder} 
+						@click=${ ()=> { this.renderSuggestions = true }}
 						@focus=${this.handleFocus}
 						@blur=${this.handleBlur}
 						@input=${this.handleChange}
@@ -110,16 +111,13 @@ class LitTags extends LitElement {
 						id=${inputId}
 						maxLength=${maxLength}/>
 				</div>
-				<lit-suggestions
-					query=${query}
-					suggestions=${JSON.stringify(suggestions)}
-					labelField=${this.labelField}
-					selectedIndex=${selectedIndex}
-					.handleClick=${(i) => {this.handleSuggestionClick(i)}}
-					.handleHover=${(i) => {this.handleSuggestionHover(i)}}
-					shouldRenderSuggestions=${this.shouldRenderSuggestions}
-					isFocused=${this.isFocused}>
-				</lit-suggestions>
+				${this.renderSuggestions ? html`
+					<lit-suggestions query=${query} suggestions=${JSON.stringify(suggestions)} labelField=${this.labelField}
+						selectedIndex=${selectedIndex} .handleClick=${(i)=> { this.handleSuggestionClick(i) }}
+						.handleHover=${(i) => { this.handleSuggestionHover(i) }}
+						isFocused=${this.isFocused}>
+					</lit-suggestions>
+				` : html``}
 			</div>
 		`;
 	}
@@ -139,7 +137,7 @@ class LitTags extends LitElement {
 		let filtered = exactSuggestions.filter((suggestion) => {
 			return !tagsName.includes(suggestion.name);
 		})
-		
+
 		return filtered;
 	}
 
@@ -178,6 +176,7 @@ class LitTags extends LitElement {
 	}
 
 	async handleChange(e) {
+		this.renderSuggestions = true;
 		const query = this.shadowRoot.querySelector('input').value.trim();
 		const suggestions = this.filteredSuggestions(query, this.allSuggestions);
 		this.query = query;
@@ -234,8 +233,17 @@ class LitTags extends LitElement {
 			}
 		}
 
+		// when backspace key is pressed and query is empty -> delete tag?
+		if ( e.keyCode === KEYS.BACKSPACE && query === '') {
+			this.renderSuggestions = false;
+			let tag = this.tags[this.tags.length - 1];
+			console.log(tag)
+			this.handleDeleteProps(tag);
+		}
+
+
 		// when backspace key is pressed and query is not empty -> update suggestions
-		if ( e.keyCode === KEYS.BACKSPACE) {
+		if (e.keyCode === KEYS.BACKSPACE) {
 			this.handleChange();
 		}
 
@@ -263,7 +271,7 @@ class LitTags extends LitElement {
 		const clipboardData = e.clipboardData || window.clipboardData;
 		const clipboardText = clipboardData.getData('text');
 
-		const { maxLength = clipboardText.length } = this; 
+		const { maxLength = clipboardText.length } = this;
 
 		const maxTextLength = Math.min(maxLength, clipboardText.length);
 		const pastedText = clipboardData.getData('text').substr(0, maxTextLength);
@@ -329,11 +337,8 @@ class LitTags extends LitElement {
 
 		return tags.map((tag) => {
 			return html`
-				<lit-tag
-					tag=${JSON.stringify(tag)}
-					labelField=${labelField}
-					.onDelete=${(tag) => { this.handleDelete(tag) }}
-				/>
+				<lit-tag tag=${JSON.stringify(tag)} labelField=${labelField} .onDelete=${(tag)=> { this.handleDelete(tag) }}
+					/>
 			`;
 		});
 	}
