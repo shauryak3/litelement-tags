@@ -40,18 +40,11 @@ class Suggestions extends LitElement {
 
 	updated(changedProps) {
 		if (
-			this.suggestionsContainer &&
-			changedProps.get('selectedIndex') !== this.selectedIndex
+			changedProps.has('selectedIndex')
 		) {
-			const activeSuggestion = this.suggestionsContainer.querySelector(
-				DEFAULT_CLASSNAMES.activeSuggestion
-			);
-
+			const activeSuggestion = this.shadowRoot.querySelector('.' + DEFAULT_CLASSNAMES.activeSuggestion);
 			if (activeSuggestion) {
-				maybeScrollSuggestionIntoView(
-					activeSuggestion,
-					this.suggestionsContainer
-				);
+				maybeScrollSuggestionIntoView(activeSuggestion, activeSuggestion.parentNode);
 			}
 		}
 	}
