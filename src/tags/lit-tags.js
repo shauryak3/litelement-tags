@@ -6,7 +6,7 @@ import './suggestions';
 import './tag';
 
 import { buildRegExpFromDelimiters } from './utils';
-
+import litTagsStyle from './lit-tags.scss';
 //Constants
 import {
 	KEYS,
@@ -71,6 +71,10 @@ class LitTags extends LitElement {
 			id: { type: String },
 			renderSuggestions: { type: Boolean }
 		};
+	}
+
+	static get styles() {
+		return [litTagsStyle];
 	}
 
 	connectedCallback() {

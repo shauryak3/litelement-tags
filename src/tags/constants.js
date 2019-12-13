@@ -12,12 +12,13 @@ export const DEFAULT_PLACEHOLDER = 'Add new tag';
 export const DEFAULT_LABEL_FIELD = 'name';
 
 export const DEFAULT_CLASSNAMES = {
-	tags: 'litelement__tags',
-	tagInput: 'litelement__tagInput',
-	tagInputField: 'litelement__tagInputField',
-	selected: 'litelement__selected',
-	tag: 'litelement__tag',
-	remove: 'litelement__remove',
-	suggestions: 'litelement__suggestions',
-	activeSuggestion: 'litelement__activeSuggestion',
+	tags: 'lit-tags__tags',
+	tagInput: 'lit-tags__tag-input',
+	tagInputField: 'lit-tags__tag-input-field',
+	selected: 'lit-tags__selected',
+	tag: 'lit-tags__tag',
+	remove: 'lit-tags__remove',
+	suggestions: 'lit-tags__suggestions',
+	suggestion: 'lit-tags__suggestion',
+	activeSuggestion: 'lit-tags__active-suggestion'
 };

@@ -1,0 +1,32 @@
+@import './variables';
+@import './reset';
+
+:host {
+    margin: 2px;
+    flex-shrink: 0;
+}
+
+.lit-tags__tag {
+    display: inline-block;
+    color: #424852;
+    font-weight: $font-weight-semibold;
+    padding: 3px 8px;
+    background: #EEEFF1;
+    border: 1px solid #D9DDE1;
+    border-radius: 2px;
+}
+
+.lit-tags__remove {
+    padding: 0;
+    margin: 0;
+    margin-left: 2px;
+    white-space: nowrap;
+    color: inherit;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    
+    &:hover {
+        color: $color-grey-1;
+    }
+}

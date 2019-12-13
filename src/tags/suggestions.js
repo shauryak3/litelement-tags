@@ -2,6 +2,7 @@ import { LitElement, html } from 'lit-element';
 
 import { DEFAULT_CLASSNAMES } from './constants';
 import isEqual from 'lodash/isEqual';
+import suggestionsStyle from './suggestions.scss';
 
 const maybeScrollSuggestionIntoView = (suggestionEl, suggestionsContainer) => {
 	const containerHeight = suggestionsContainer.offsetHeight;
@@ -33,6 +34,10 @@ class Suggestions extends LitElement {
 		};
 	}
 
+	static get styles() {
+		return [suggestionsStyle];
+	}
+
 	updated(changedProps) {
 		if (
 			this.suggestionsContainer &&
@@ -59,7 +64,7 @@ class Suggestions extends LitElement {
 					@mousedown=${() => {this.handleClick(i)}}
 					@touchstart=${() => {this.handleClick(i)}}
 					@mouseover=${() => {this.handleHover(i)}}
-					class=${ i === this.selectedIndex ? DEFAULT_CLASSNAMES.activeSuggestion : ''}
+					class="${DEFAULT_CLASSNAMES.suggestion} ${ i === this.selectedIndex ? DEFAULT_CLASSNAMES.activeSuggestion : ''}"
 					>
 					${item.name}
 				</li>
@@ -68,10 +73,7 @@ class Suggestions extends LitElement {
 
 		return html`
 			${suggestions.length? html`
-				<div
-					class=${DEFAULT_CLASSNAMES.suggestions}>
-					<ul> ${suggestions} </ul>
-				</div>
+				<ul class=${ DEFAULT_CLASSNAMES.suggestions}> ${suggestions} </ul>
 			`:html``}
 		`;
 	}

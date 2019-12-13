@@ -1,0 +1,46 @@
+:host {
+    font-family: $base-font-family;
+    font-size: 12px;
+    color: $color-default;
+}
+
+*, *:before, *:after {
+    box-sizing: border-box;
+}
+
+:host, slot {
+    display: block;
+}
+
+h3, h4, ol, ul {
+    margin: 0;
+    padding: 0;
+    font-weight: normal;
+}
+
+ol, ul {
+    list-style: none;
+}
+
+a {
+    color: $color-blue;
+    text-decoration: none;
+
+    &:hover {
+        color: darken($color-blue, 20%);
+        text-decoration: underline;
+    }
+}
+
+input {
+    font-family: inherit;
+    font-size: 13px;
+
+    &:focus {
+        outline: 0;
+    }
+
+    &:required {
+        box-shadow: none;
+    }
+}
