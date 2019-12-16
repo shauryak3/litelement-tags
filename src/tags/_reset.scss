@@ -12,25 +12,16 @@
     display: block;
 }
 
-h3, h4, ol, ul {
+ul {
     margin: 0;
     padding: 0;
     font-weight: normal;
 }
 
-ol, ul {
+ul {
     list-style: none;
 }
 
-a {
-    color: $color-blue;
-    text-decoration: none;
-
-    &:hover {
-        color: darken($color-blue, 20%);
-        text-decoration: underline;
-    }
-}
 
 input {
     font-family: inherit;

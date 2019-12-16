@@ -116,7 +116,8 @@ class LitTags extends LitElement {
 						@paste=${this.handlePaste}
 						name=${inputName}
 						id=${inputId}
-						maxLength=${maxLength}/>
+						maxLength=${maxLength}
+						size="1"/>
 				</div>
 				${this.renderSuggestions ? html`
 					<lit-suggestions 
