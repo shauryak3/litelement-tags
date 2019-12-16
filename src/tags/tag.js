@@ -1,7 +1,6 @@
 import { LitElement, html } from 'lit-element';
 
 import tagStyle from './tag.scss';
-import { DEFAULT_CLASSNAMES } from './constants';
 
 class Tag extends LitElement {
 	static get properties() {
@@ -9,7 +8,7 @@ class Tag extends LitElement {
 			tag: { type: Object },
 			onDelete: { type: Function},
 			labelField: { type: String}
-		}; 
+		};
 	}
 
 	static get styles() {
@@ -20,9 +19,9 @@ class Tag extends LitElement {
 		const label = this.tag[this.labelField];
 
 		return html`
-			<div class=${DEFAULT_CLASSNAMES.tag}>
+			<div class="tag">
 				<span>${label}</span>
-				<button type="button" class=${DEFAULT_CLASSNAMES.remove}
+				<button type="button" class="tag__remove-btn"
 					title="Delete label ${label}" aria-label="Delete label ${label}"
 					@click=${() => {this.onDelete(this.tag)}}>
 					<svg width="8px" height="8px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
@@ -34,4 +33,4 @@ class Tag extends LitElement {
 	} 
 }
 
-customElements.define('lit-tag', Tag);
+customElements.define('vwo-tag', Tag);

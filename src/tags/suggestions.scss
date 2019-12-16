@@ -1,7 +1,7 @@
 @import './variables';
 @import './reset';
 
-.lit-tags__suggestions {
+.suggestions {
     position: absolute;
     left: 0;
     top: 102%;
@@ -31,14 +31,14 @@
     
 }
 
-.lit-tags__suggestion {
+.suggestion {
     padding: 8px;
     font-weight: $font-weight-medium;
     cursor: pointer;
 }
 
-.lit-tags__suggestion:focus,
-.lit-tags__active-suggestion {
+.suggestion:focus,
+.suggestion--active {
     color: $color-white;
     background-color: $color-grey-light;
 }
