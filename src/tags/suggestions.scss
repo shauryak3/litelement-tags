@@ -3,8 +3,6 @@
 
 .suggestions {
     position: absolute;
-    left: 0;
-    top: 102%;
     width: 100%;
     font-size: 14px;
     color: $color-heading;
@@ -13,6 +11,7 @@
     border-radius: 2px;
     max-height: 200px;
     overflow-y: auto;
+    margin-top: 2px;
     padding: 8px 0;
 
     &::-webkit-scrollbar {
