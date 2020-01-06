@@ -12,6 +12,7 @@
     border: 1px solid $color-grey-2;
     box-shadow: inset 0px 1px 3px $color-grey-light;
     border-radius: 2px;
+    min-height: 3em;
 
     &:focus-within {
         border-color: $color-blue;
