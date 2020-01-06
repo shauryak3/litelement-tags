@@ -1,7 +1,5 @@
 import { LitElement, html } from 'lit-element';
 
-import { DEFAULT_CLASSNAMES } from './constants';
-import isEqual from 'lodash/isEqual';
 import suggestionsStyle from './suggestions.scss';
 
 const maybeScrollSuggestionIntoView = (suggestionEl, suggestionsContainer) => {
@@ -39,10 +37,8 @@ class Suggestions extends LitElement {
 	}
 
 	updated(changedProps) {
-		if (
-			changedProps.has('selectedIndex')
-		) {
-			const activeSuggestion = this.shadowRoot.querySelector('.' + DEFAULT_CLASSNAMES.activeSuggestion);
+		if (changedProps.has('selectedIndex')) {
+			const activeSuggestion = this.shadowRoot.querySelector('.suggestion--active');
 			if (activeSuggestion) {
 				maybeScrollSuggestionIntoView(activeSuggestion, activeSuggestion.parentNode);
 			}
@@ -57,8 +53,7 @@ class Suggestions extends LitElement {
 					@mousedown=${() => {this.handleClick(i)}}
 					@touchstart=${() => {this.handleClick(i)}}
 					@mouseover=${() => {this.handleHover(i)}}
-					class="${DEFAULT_CLASSNAMES.suggestion} ${ i === this.selectedIndex ? DEFAULT_CLASSNAMES.activeSuggestion : ''}"
-					>
+					class="suggestion ${ i === this.selectedIndex ? 'suggestion--active' : ''}">
 					${item.name}
 				</li>
 			  `;
@@ -66,10 +61,10 @@ class Suggestions extends LitElement {
 
 		return html`
 			${suggestions.length? html`
-				<ul class=${ DEFAULT_CLASSNAMES.suggestions}> ${suggestions} </ul>
+				<ul class="suggestions"> ${suggestions} </ul>
 			`:html``}
 		`;
 	}
 }
 
-customElements.define('lit-suggestions', Suggestions);
+customElements.define('tag-suggestions', Suggestions);

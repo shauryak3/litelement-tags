@@ -6,17 +6,18 @@
     flex-shrink: 0;
 }
 
-.lit-tags__tag {
+.tag {
     display: inline-block;
-    color: #424852;
+    color: $color-grey-1;
     font-weight: $font-weight-semibold;
-    padding: 3px 8px;
+    line-height: 1.4;
+    padding: 2px 8px;
     background: #EEEFF1;
     border: 1px solid #D9DDE1;
     border-radius: 2px;
 }
 
-.lit-tags__remove {
+.tag__remove-btn {
     padding: 0;
     margin: 0;
     margin-left: 2px;

@@ -1,20 +1,26 @@
 @import './variables';
 @import './reset';
 
-.litelement-tags-wrapper {
+.tags-wrapper {
     position: relative;
 }
 
-.lit-tags__selected {
+.tags-box {
     display: flex;
     flex-wrap: wrap;
-    padding: 3px;
-    border: 1px solid #A6AEB9;
-    box-shadow: inset 0px 1px 3px #788290;
+    padding: 2px;
+    border: 1px solid $color-grey-2;
+    box-shadow: inset 0px 1px 2px #b8bec6;
     border-radius: 2px;
+    min-height: 32px;
+
+    &:focus-within {
+        border-color: $color-blue;
+        box-shadow: inset 0px 1px 3px lighten($color-blue, 20%);
+    }
 }
 
-.lit-tags__tag-input-field {
+.tags-input-field {
     flex-grow: 1;
     border: none;
     margin: 2px;

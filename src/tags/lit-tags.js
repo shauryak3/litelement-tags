@@ -1,25 +1,27 @@
 import { LitElement, html } from 'lit-element';
 import noop from 'lodash/noop';
 import uniq from 'lodash/uniq';
+import { buildRegExpFromDelimiters } from './utils';
 
 import './suggestions';
 import './tag';
-
-import { buildRegExpFromDelimiters } from './utils';
 import litTagsStyle from './lit-tags.scss';
-//Constants
-import {
-	KEYS,
-	DEFAULT_PLACEHOLDER,
-	DEFAULT_LABEL_FIELD,
-	DEFAULT_CLASSNAMES
-} from './constants';
 
+//Constants
+const KEYS = {
+	ENTER: 13,
+	TAB: 9,
+	BACKSPACE: 8,
+	UP_ARROW: 38,
+	DOWN_ARROW: 40,
+	ESCAPE: 27,
+};
+
+const DEFAULT_LABEL_FIELD = 'name';
 
 class LitTags extends LitElement {
 	constructor() {
 		super();
-		this.placeholder = DEFAULT_PLACEHOLDER;
 		this.labelField = DEFAULT_LABEL_FIELD;
 		this.suggestions = this.allSuggestions;
 		this.delimiters = [KEYS.ENTER, KEYS.TAB];
@@ -43,7 +45,6 @@ class LitTags extends LitElement {
 
 	static get properties() {
 		return {
-			placeholder: { type: String },
 			labelField: { type: String },
 			allSuggestions: { type: Array },
 			suggestions: { type: Array },
@@ -95,19 +96,18 @@ class LitTags extends LitElement {
 		const tagItems = this.getTagItems();
 		const query = this.query.trim();
 		const {
-			placeholder,
 			name: inputName,
 			id: inputId,
 			maxLength
 		} = this;
+
 		return html`
-			<div class="litelement-tags-wrapper">
-				<div class=${DEFAULT_CLASSNAMES.selected}>
+			<div class="tags-wrapper">
+				<div class="tags-box">
 					${tagItems}
-					<input 
-						class=${DEFAULT_CLASSNAMES.tagInputField} 
-						type="text" placeholder=${placeholder}
-						aria-label=${placeholder} 
+					<input
+						class="tags-input-field"
+						type="text"
 						@click=${ ()=> { this.renderSuggestions = true }}
 						@focus=${this.handleFocus}
 						@blur=${this.handleBlur}
@@ -116,10 +116,11 @@ class LitTags extends LitElement {
 						@paste=${this.handlePaste}
 						name=${inputName}
 						id=${inputId}
-						maxLength=${maxLength}/>
+						maxLength=${maxLength}
+						size="1"/>
 				</div>
 				${this.renderSuggestions ? html`
-					<lit-suggestions 
+					<tag-suggestions 
 						query=${query} 
 						suggestions=${JSON.stringify(this.suggestions)} 
 						labelField=${this.labelField}
@@ -127,7 +128,7 @@ class LitTags extends LitElement {
 						.handleClick=${(i)=> { this.handleSuggestionClick(i) }}
 						.handleHover=${(i) => { this.handleSuggestionHover(i) }}
 						isFocused=${this.isFocused}>
-					</lit-suggestions>
+					</tag-suggestions>
 				` : html``}
 			</div>
 		`;
@@ -347,11 +348,14 @@ class LitTags extends LitElement {
 
 		return tags.map((tag) => {
 			return html`
-				<lit-tag tag=${JSON.stringify(tag)} labelField=${labelField} .onDelete=${(tag)=> { this.handleDelete(tag) }}
-					/>
+				<vwo-tag
+					tag=${JSON.stringify(tag)}
+					labelField=${labelField}
+					.onDelete=${(tag)=> { this.handleDelete(tag) }}
+				/>
 			`;
 		});
 	}
 }
 
-customElements.define('lit-tags', LitTags);
+customElements.define('vwo-tags', LitTags);
