@@ -41,6 +41,13 @@ class LitTags extends LitElement {
 		this.isFocused = false;
 		this.query = '';
 		this.renderSuggestions = false;
+		document.addEventListener('click', async e => {
+			let dropdown = this.shadowRoot;
+			if(!dropdown.contains(e.path[0])) {
+				this.handleSuggestionClick(-1);
+			}
+			await this.requestUpdate();
+		});
 	}
 
 	static get properties() {
@@ -332,7 +339,16 @@ class LitTags extends LitElement {
 	}
 
 	handleSuggestionClick(i) {
-		this.addTag(this.suggestions[i]);
+		if(i === -1){
+			// reset the state
+			this.query = '';
+			this.selectionMode = false;
+			this.selectedIndex = -1;
+			this.renderSuggestions = false;
+			this.resetAndFocusInput();
+		} else {
+			this.addTag(this.suggestions[i]);
+		}
 	}
 
 	handleSuggestionHover(i) {

@@ -243,8 +243,6 @@ class TagApp extends LitElement {
 	handleDelete(deleteTag) {
 		let tags = this.tags.filter((tag) => tag.id !== deleteTag.id);
 		this.tags = tags;
-		console.log(deleteTag);
-		console.log(this.tags);
 	}
 
 	async handleAddition(tag) {
