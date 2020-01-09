@@ -345,7 +345,7 @@ class LitTags extends LitElement {
 			this.selectionMode = false;
 			this.selectedIndex = -1;
 			this.renderSuggestions = false;
-			this.resetAndFocusInput();
+			this.shadowRoot.querySelector('input').value = '';
 		} else {
 			this.addTag(this.suggestions[i]);
 		}
