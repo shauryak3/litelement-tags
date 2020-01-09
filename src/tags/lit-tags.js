@@ -341,11 +341,9 @@ class LitTags extends LitElement {
 	handleSuggestionClick(i) {
 		if(i === -1){
 			// reset the state
-			this.query = '';
 			this.selectionMode = false;
 			this.selectedIndex = -1;
 			this.renderSuggestions = false;
-			this.shadowRoot.querySelector('input').value = '';
 		} else {
 			this.addTag(this.suggestions[i]);
 		}
