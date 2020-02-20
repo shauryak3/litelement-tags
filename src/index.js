@@ -1,3 +1,3 @@
-import './tags/lit-tags';
+// import './tags/lit-tags';
 
-// import '../demo/main';
+import '../demo/main';

@@ -3,7 +3,7 @@ import noop from 'lodash/noop';
 import uniq from 'lodash/uniq';
 import { buildRegExpFromDelimiters } from './utils';
 
-import './suggestions';
+import './tag-suggestions';
 import './tag';
 import litTagsStyle from './lit-tags.scss';
 
@@ -372,4 +372,4 @@ class LitTags extends LitElement {
 	}
 }
 
-customElements.define('vwo-tags', LitTags);
+customElements.define('lit-tags', LitTags);
